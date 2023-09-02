@@ -1,0 +1,15 @@
+import { NextRequest, NextResponse } from "next/server";
+import OpenAI from "openai";
+
+const openai = new OpenAI({
+  apiKey: process.env.OPEN_AI_API,
+});
+
+export async function POST(request: NextRequest) {
+  const chatCompletion = await openai.chat.completions.create({
+    model: "gpt-3.5-turbo",
+    messages: [{ role: "user", content: "Hello!" }],
+  });
+  console.log(chatCompletion.choices[0]);
+  return NextResponse.json("heyy", { status: 200 });
+}
