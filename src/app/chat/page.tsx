@@ -8,9 +8,6 @@ const ChatPage = () => {
   const [selectedOption, setSelectedOption] = useState<string>("default");
   const [options, setOptions] = useState<string[]>([]);
   const [story, setStory] = useState<string>("");
-  useEffect(() => {
-    getData();
-  }, [selectedOption]);
   const getData = async () => {
     const { data } = await axios.post(
       "/api/openai",
@@ -26,13 +23,20 @@ const ChatPage = () => {
     setStory(data.story);
     setOptions(data.choices);
   };
+  useEffect(() => {
+    getData();
+  }, [selectedOption, getData]);
 
   return (
     <div className="p-36">
       <p className="text-violet-600 text-xl font-semibold">{story}</p>
-      {options?.map((option) => {
+      {options?.map((option, index) => {
         return (
-          <Button variant="option" onClick={() => setSelectedOption(option)}>
+          <Button
+            key={index}
+            variant="option"
+            onClick={() => setSelectedOption(option)}
+          >
             {option}
           </Button>
         );
