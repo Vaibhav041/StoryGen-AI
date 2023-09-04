@@ -33,7 +33,6 @@ export async function POST(request: NextRequest) {
     model: "gpt-3.5-turbo",
     messages: messageHistory,
   });
-  console.log(chatCompletion.choices[0]);
   const result = extract(chatCompletion.choices[0].message.content as string);
   return NextResponse.json(result, {
     status: 200,

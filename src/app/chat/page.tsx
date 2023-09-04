@@ -1,14 +1,13 @@
 "use client";
-import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
 const ChatPage = () => {
-  const [selectedOption, setSelectedOption] = useState<string>("default");
   const [options, setOptions] = useState<string[]>([]);
   const [story, setStory] = useState<string>("");
-  const getData = async () => {
+
+  const getData = async (selectedOption: string) => {
     const { data } = await axios.post(
       "/api/openai",
       {
@@ -23,20 +22,17 @@ const ChatPage = () => {
     setStory(data.story);
     setOptions(data.choices);
   };
+
   useEffect(() => {
-    getData();
-  }, [selectedOption, getData]);
+    getData("default");
+  }, []);
 
   return (
     <div className="p-36">
       <p className="text-violet-600 text-xl font-semibold">{story}</p>
       {options?.map((option, index) => {
         return (
-          <Button
-            key={index}
-            variant="option"
-            onClick={() => setSelectedOption(option)}
-          >
+          <Button key={index} variant="option" onClick={() => getData(option)}>
             {option}
           </Button>
         );
