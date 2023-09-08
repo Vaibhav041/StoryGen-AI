@@ -2,18 +2,19 @@
 import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
-import axios from "axios";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Home() {
   const [showFrame, setShowFrame] = useState<boolean>(true);
   const router = useRouter();
+
+  const checkWindowSize = () => {
+    setShowFrame(window.innerWidth > 1279);
+  };
   useEffect(() => {
-    window.addEventListener("resize", () => {
-      setShowFrame(window.innerWidth > 1279);
-    });
+    checkWindowSize();
+    window.addEventListener("resize", checkWindowSize);
   }, []);
 
   return (
@@ -47,15 +48,6 @@ export default function Home() {
           </div>
         )}
       </div>
-      {/* <footer className="fixed bottom-2 left-[45%] text-gray-500 font-medium">
-        Created by{" "}
-        <Link
-          href="https://github.com/vaibhav041/"
-          className="text-white font-serif underline"
-        >
-          Vaibhav
-        </Link>
-      </footer> */}
     </main>
   );
 }
