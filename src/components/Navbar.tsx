@@ -19,7 +19,7 @@ const Navbar = () => {
           <Badge variant="beta">Beta</Badge>
         </section>
         <section className="flex gap-7 z-10">
-          <Link href="https://github.com/vaibhav041/">
+          <Link href="https://github.com/Vaibhav041/StoryGen-AI">
             <GitHubIcon
               className="text-gray-500"
               style={{ fontSize: "30px" }}
