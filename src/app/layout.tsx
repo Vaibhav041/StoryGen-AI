@@ -1,6 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { MessagesHistoryProvider } from "@/context/MessagesHistoryContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,7 +24,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-[#17181C] text-white">{children}</body>
+      <body className="bg-[#17181C] text-white">
+        <MessagesHistoryProvider>{children}</MessagesHistoryProvider>
+      </body>
     </html>
   );
 }

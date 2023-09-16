@@ -1,42 +1,41 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef } from "react";
+import {
+  MessagesHistoryContext,
+  MessagesHistoryType,
+} from "@/context/MessagesHistoryContext";
+import StoryInput from "@/components/StoryInput";
 
 const ChatPage = () => {
-  const [options, setOptions] = useState<string[]>([]);
-  const [story, setStory] = useState<string>("");
-
-  const getData = async (selectedOption: string) => {
-    const { data } = await axios.post(
-      "/api/openai",
-      {
-        option: selectedOption,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    setStory(data.story);
-    setOptions(data.choices);
-  };
+  const { messagesHistory } = React.useContext(
+    MessagesHistoryContext
+  ) as MessagesHistoryType;
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    getData("default");
-  }, []);
+    scrollRef.current?.scrollTo({
+      top: scrollRef.current?.scrollHeight,
+      behavior: "smooth",
+    });
+  }, [messagesHistory]);
 
   return (
-    <div className="p-36">
-      <p className="text-violet-600 text-xl font-semibold">{story}</p>
-      {options?.map((option, index) => {
-        return (
-          <Button key={index} variant="option" onClick={() => getData(option)}>
-            {option}
-          </Button>
-        );
-      })}
+    <div className="flex justify-center items-center w-full h-screen">
+      <div className="w-1/2 h-[70%] text-xl overflow-auto" ref={scrollRef}>
+        {messagesHistory.slice(1).map((message, index) => {
+          return (
+            <p
+              className={`text-violet-400 my-7 ${
+                message.role === "user" ? " text-white" : null
+              }`}
+              key={index}
+            >
+              {message.content}
+            </p>
+          );
+        })}
+        <StoryInput />
+      </div>
     </div>
   );
 };
